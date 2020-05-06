@@ -1,7 +1,7 @@
 import requests
 
 
-class WeatherRequests:
+class WeatherHatRequests:
     def __init__(self):
         self.url = "https://www.metaweather.com/api/"
 
