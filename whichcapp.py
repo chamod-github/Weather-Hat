@@ -70,10 +70,13 @@ class WhichCapp:
             print("Wear hat")
 
     def display_information(self):
-        index = self.search_results.curselection()[0]
-        woeid = self.city_array[index]['woeid']
-        abbr = self.api.get_weather(woeid)['consolidated_weather'][0]['weather_state_abbr']
-        self.which_hat(abbr)
+        selection = self.search_results.curselection()
+        # an option must be selected
+        if(selection):
+            index = selection[0]
+            woeid = self.city_array[index]['woeid']
+            abbr = self.api.get_weather(woeid)['consolidated_weather'][0]['weather_state_abbr']
+            self.which_hat(abbr)
 
 
 def main():

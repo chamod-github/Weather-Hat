@@ -7,11 +7,12 @@ class WeatherRequests:
 
     def search_city_name(self, name):
         """
-            Searches for a list of cities matching the given name
+        Searches for a list of cities matching the given name
 
-            :param name: Name to search for
-            :return: A list of cities containing the matching name
-            """
+        :param name: Name to search for
+        :return: A list of cities containing the matching name
+        
+        """
         try:
             tmp = self.url
             tmp += 'location/search/'
