@@ -39,3 +39,9 @@ class WeatherHatRequests:
         weather = response.json()
 
         return weather
+
+    def get_weather_abbr(self, woeid):
+        tmp = self.get_weather(woeid)['consolidated_weather'][0]['weather_state_abbr']
+        if tmp:
+            return tmp
+        return None

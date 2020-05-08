@@ -1,5 +1,6 @@
 import weatherhatreq as whr
 import tkinter as tk
+from PIL import Image, ImageTk
 
 
 class WeatherHat:
@@ -22,19 +23,25 @@ class WeatherHat:
         self.city_array = []
 
         # Frame to manage search bar and button
-        self.frame_search = tk.Frame(self.master, bg='blue', bd=5)
+        self.frame_search = tk.Frame(self.master, bd=5)
         self.frame_search.place(relx=0.01, rely=0.1, relheight=0.1, relwidth=0.98)
+
+        self.entry_text = tk.Label(self.frame_search, font=40, text="Enter City: ")
+        self.entry_text.place(relheight=1, relwidth=0.1, relx=0.01)
 
         # Search entry box
         self.entry_text = tk.Entry(self.frame_search, font=40)
-        self.entry_text.place(relheight=1, relwidth=0.65, relx=0.1)
+        self.entry_text.place(relheight=1, relwidth=0.5, relx=0.15)
+
+        # Press enter to populate search results
+        self.master.bind('<Return>', lambda event: self.display_array())
 
         # Search submit button
         self.submit_button = tk.Button(self.frame_search, text="Search", command=lambda: self.display_array(), font=40)
-        self.submit_button.place(relheight=1, relx=0.76, relwidth=0.2)
+        self.submit_button.place(relheight=1, relx=0.66, relwidth=0.2)
 
         # Frame to display information
-        self.frame_display = tk.Frame(self.master, bg='green')
+        self.frame_display = tk.Frame(self.master)
         self.frame_display.place(relx=0.01, rely=0.25, relheight=0.7, relwidth=0.98)
 
         # Scroll bar for scrolling list box
@@ -49,16 +56,19 @@ class WeatherHat:
         self.scroll_bar.config(command=self.search_results.yview)
 
         # Frame that holds weather info widgets
-        self.cap_info = tk.Frame(self.frame_display, bg='yellow')
+        self.cap_info = tk.Frame(self.frame_display)
         self.cap_info.place(relheight=0.98, relwidth=0.3, relx=0.69, rely=0.01)
 
+        # Default placeholder image
+        self.img_var = ImageTk.PhotoImage(Image.open("images/default_hat.png"))
+
         # Cap info image canvas
-        self.cap_img = tk.Canvas(self.cap_info, bg='red')
+        self.cap_img = tk.Label(self.cap_info)
         self.cap_img.place(relheight=0.5, relwidth=0.98, relx=0.01, rely=0.01)
 
         # Cap info message
         self.weather_var = tk.StringVar()
-        self.info_text = tk.Message(self.cap_info, textvariable=self.weather_var, anchor=tk.NW, padx=20, pady=20,
+        self.info_text = tk.Message(self.cap_info, textvariable=self.weather_var, anchor=tk.N, padx=20, pady=20,
                                     justify=tk.LEFT)
         self.info_text.place(relheight=0.47, relwidth=0.98, relx=0.01, rely=0.52)
 
@@ -88,37 +98,53 @@ class WeatherHat:
         """
         if abbr == 'sn':
             self.weather_var.set("It is snowing. You need a snow hat!")
+            self.update_hat_img("images/snow_hat.png")
             return
         if abbr == 'sl':
             self.weather_var.set("There is sleet. You need a light snow hat!")
+            self.update_hat_img("images/snow_hat.png")
             return
         if abbr == 'h':
             self.weather_var.set("There is hail. You need a hard hat!")
+            self.update_hat_img("images/hard_hat.png")
             return
         if abbr == 't':
             self.weather_var.set("There is thunderstorm. You need a hat without metal!")
+            self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 'hr':
             self.weather_var.set("It is raining heavy. You need a waterproof hat with a brim!")
+            self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 'lr':
             self.weather_var.set("It is light rain. You need a hat with a brim!")
+            self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 's':
             self.weather_var.set("It is showering. You need a hat with a brim!")
+            self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 'hc':
             self.weather_var.set("It is heavy cloudy. You can wear any hat!")
+            self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 'lc':
             self.weather_var.set("It is light cloudy. You can wear any hat!")
+            self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 'c':
             self.weather_var.set("It is clear! You might need a hat with a brim!")
+            self.update_hat_img("images/brim_hat.png")
             return
         else:
             self.weather_var.set("information not available.")
+            self.update_hat_img("images/default_hat.png")
             return
+
+    def update_hat_img(self, image_name):
+
+        self.img_var = ImageTk.PhotoImage(Image.open(image_name))
+        self.cap_img.configure(image=self.img_var)
 
     def display_information(self):
         """
@@ -131,13 +157,12 @@ class WeatherHat:
         selection = self.search_results.curselection()
         # an option must be selected
         if selection:
-
             # Find the index of the selected result
             index = selection[0]
             woeid = self.city_array[index]['woeid']
 
             # Get the corresponding weather abbreviation
-            abbr = self.api.get_weather(woeid)['consolidated_weather'][0]['weather_state_abbr']
+            abbr = self.api.get_weather_abbr(woeid)
             self.which_hat(abbr)
 
 
@@ -154,6 +179,7 @@ def main():
     WeatherHat(root, api)
     root.title("Weather App")
     root.configure(width=WIDTH, height=HEIGHT)
+    root.resizable(False, False)
     root.mainloop()
 
 
