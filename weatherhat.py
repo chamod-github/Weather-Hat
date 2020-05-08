@@ -41,7 +41,7 @@ class WeatherHat:
         self.submit_button.place(relheight=1, relx=0.66, relwidth=0.2)
 
         # Frame to display information
-        self.frame_display = tk.Frame(self.master)
+        self.frame_display = tk.Frame(self.master, bg='#000050')
         self.frame_display.place(relx=0.01, rely=0.25, relheight=0.7, relwidth=0.98)
 
         # Scroll bar for scrolling list box
@@ -56,14 +56,14 @@ class WeatherHat:
         self.scroll_bar.config(command=self.search_results.yview)
 
         # Frame that holds weather info widgets
-        self.cap_info = tk.Frame(self.frame_display)
+        self.cap_info = tk.Frame(self.frame_display, bg='#000050')
         self.cap_info.place(relheight=0.98, relwidth=0.3, relx=0.69, rely=0.01)
 
         # Default placeholder image
         self.img_var = ImageTk.PhotoImage(Image.open("images/default_hat.png"))
 
         # Cap info image canvas
-        self.cap_img = tk.Label(self.cap_info)
+        self.cap_img = tk.Label(self.cap_info, bg='#000050')
         self.cap_img.place(relheight=0.5, relwidth=0.98, relx=0.01, rely=0.01)
 
         # Cap info message
@@ -98,31 +98,31 @@ class WeatherHat:
         """
         if abbr == 'sn':
             self.weather_var.set("It is snowing. You need a snow hat!")
-            self.update_hat_img("images/snow_hat.png")
+            self.update_hat_img("images/snow_hat_heavy_snow.png")
             return
         if abbr == 'sl':
             self.weather_var.set("There is sleet. You need a light snow hat!")
-            self.update_hat_img("images/snow_hat.png")
+            self.update_hat_img("images/snow_hat_light_snow.png")
             return
         if abbr == 'h':
             self.weather_var.set("There is hail. You need a hard hat!")
             self.update_hat_img("images/hard_hat.png")
             return
         if abbr == 't':
-            self.weather_var.set("There is thunderstorm. You need a hat without metal!")
-            self.update_hat_img("images/brim_hat.png")
+            self.weather_var.set("There is a thunderstorm. You need a hat without metal!")
+            self.update_hat_img("images/brim_hat_no_metal.png")
             return
         if abbr == 'hr':
-            self.weather_var.set("It is raining heavy. You need a waterproof hat with a brim!")
-            self.update_hat_img("images/brim_hat.png")
+            self.weather_var.set("It is heavily raining. You need a waterproof hat with a brim!")
+            self.update_hat_img("images/brim_hat_heavy_rain.png")
             return
         if abbr == 'lr':
-            self.weather_var.set("It is light rain. You need a hat with a brim!")
-            self.update_hat_img("images/brim_hat.png")
+            self.weather_var.set("It is lightly raining. You need a hat with a brim!")
+            self.update_hat_img("images/brim_hat_light_rain.png")
             return
         if abbr == 's':
             self.weather_var.set("It is showering. You need a hat with a brim!")
-            self.update_hat_img("images/brim_hat.png")
+            self.update_hat_img("images/brim_hat_light_rain.png")
             return
         if abbr == 'hc':
             self.weather_var.set("It is heavy cloudy. You can wear any hat!")
@@ -133,7 +133,7 @@ class WeatherHat:
             self.update_hat_img("images/brim_hat.png")
             return
         if abbr == 'c':
-            self.weather_var.set("It is clear! You might need a hat with a brim!")
+            self.weather_var.set("It is clear. You can wear any hat!")
             self.update_hat_img("images/brim_hat.png")
             return
         else:
