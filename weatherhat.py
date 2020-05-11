@@ -10,16 +10,14 @@ class WeatherHat:
 
     """
 
-    def __init__(self, master, api):
+    def __init__(self):
         """
-
         Initialize the WeatherHat GUI
 
-        :param master: Main tkinter window
-        :param api: API object
         """
-        self.master = master
-        self.api = api
+        self.master = tk.Tk()
+
+        # Empty array for cities
         self.city_array = []
 
         # Frame to manage search bar and button
@@ -72,6 +70,12 @@ class WeatherHat:
                                     justify=tk.LEFT)
         self.info_text.place(relheight=0.47, relwidth=0.98, relx=0.01, rely=0.52)
 
+        # Initializing the window
+        self.master.configure(width=800, height=600)
+        self.master.title("Weather Hat")
+        self.master.resizable(False, False)
+        self.master.mainloop()
+
     def display_array(self):
         """
 
@@ -81,10 +85,11 @@ class WeatherHat:
         """
 
         self.search_results.delete(0, tk.END)
-        self.city_array = self.api.search_city_name(self.entry_text.get())
+        self.city_array = whr.search_city_name(self.entry_text.get())
 
-        # Iterate through cities and  insert them to the list box
+        # If API request was successful
         if self.city_array is not None:
+            # Iterate and insert cities to the end of list box
             for i in self.city_array:
                 self.search_results.insert(tk.END, str(i['title']))
 
@@ -100,48 +105,63 @@ class WeatherHat:
             self.weather_var.set("It is snowing. You need a snow hat!")
             self.update_hat_img("images/snow_hat_heavy_snow.png")
             return
+
         if abbr == 'sl':
             self.weather_var.set("There is sleet. You need a light snow hat!")
             self.update_hat_img("images/snow_hat_light_snow.png")
             return
+
         if abbr == 'h':
             self.weather_var.set("There is hail. You need a hard hat!")
             self.update_hat_img("images/hard_hat.png")
             return
+
         if abbr == 't':
             self.weather_var.set("There is a thunderstorm. You need a hat without metal!")
             self.update_hat_img("images/brim_hat_no_metal.png")
             return
+
         if abbr == 'hr':
             self.weather_var.set("It is heavily raining. You need a waterproof hat with a brim!")
             self.update_hat_img("images/brim_hat_heavy_rain.png")
             return
+
         if abbr == 'lr':
             self.weather_var.set("It is lightly raining. You need a hat with a brim!")
             self.update_hat_img("images/brim_hat_light_rain.png")
             return
+
         if abbr == 's':
             self.weather_var.set("It is showering. You need a hat with a brim!")
             self.update_hat_img("images/brim_hat_light_rain.png")
             return
+
         if abbr == 'hc':
             self.weather_var.set("It is heavy cloudy. You can wear any hat!")
             self.update_hat_img("images/brim_hat.png")
             return
+
         if abbr == 'lc':
             self.weather_var.set("It is light cloudy. You can wear any hat!")
             self.update_hat_img("images/brim_hat.png")
             return
+
         if abbr == 'c':
             self.weather_var.set("It is clear. You can wear any hat!")
             self.update_hat_img("images/brim_hat.png")
             return
+
         else:
             self.weather_var.set("information not available.")
             self.update_hat_img("images/default_hat.png")
             return
 
     def update_hat_img(self, image_name):
+        """
+
+        :param image_name: Name of the image to display
+        :return: None
+        """
 
         self.img_var = ImageTk.PhotoImage(Image.open(image_name))
         self.cap_img.configure(image=self.img_var)
@@ -162,7 +182,7 @@ class WeatherHat:
             woeid = self.city_array[index]['woeid']
 
             # Get the corresponding weather abbreviation
-            abbr = self.api.get_weather_abbr(woeid)
+            abbr = whr.get_weather_abbr(woeid)
             self.which_hat(abbr)
 
 
@@ -172,15 +192,7 @@ def main():
     
     :return: None
     """
-    WIDTH = 800
-    HEIGHT = 600
-    root = tk.Tk()
-    api = whr.WeatherHatRequests()
-    WeatherHat(root, api)
-    root.title("Weather App")
-    root.configure(width=WIDTH, height=HEIGHT)
-    root.resizable(False, False)
-    root.mainloop()
+    WeatherHat()
 
 
 if __name__ == "__main__":
