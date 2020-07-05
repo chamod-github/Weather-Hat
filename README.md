@@ -4,8 +4,7 @@ Program to figure out which hat to wear based on the weather
 
 ## Screenshot
 
-```![Screenshot of the app](/images/screenshot1.png)
-```
+![Screenshot of the app](/images/screenshot1.png)
 
 ## Installation
 
