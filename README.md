@@ -1,6 +1,6 @@
 # Weather Hat
 
-Program to figure out which hat to wear based on the weather
+Program to figure out which hat to wear based on the weather using the [MetaWeather API](https://www.metaweather.com/)
 
 ## Screenshot
 
