@@ -8,7 +8,7 @@ Program to figure out which hat to wear based on the weather
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Weather Hat.
+Use the latest Python version [Python](https://www.python.org/downloads/) and run the weatherhat.py
 
 ```bash
 pip install weatherhat
